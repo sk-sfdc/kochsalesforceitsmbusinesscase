@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Koch Technologies | Agentforce ITSM ROI</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg:        #E8EBF0;
+      --white:     #FFFFFF;
+      --border:    #D8DCE6;
+      /* Koch */
+      --koch:      #111111;
+      --koch-mid:  #333333;
+      /* Salesforce */
+      --sf-blue:   #00A1E0;
+      --sf-cloud:  #009EDB;
+      /* Dark cards */
+      --snow-card: #111827;
+      --sf-card:   #0C3D5A;
+      --sf-teal:   #1ECFC4;
+      --sf-teal2:  #18B5AB;
+      /* Text */
+      --text:      #1A1A1A;
+      --muted:     #5A6070;
+      /* Greens */
+      --green:     #1E8449;
+      --green-bg:  #E8F6ED;
+      --green-bd:  #A3D9B5;
+      /* Red */
+      --red:       #C0392B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    /* ══ LAYOUT ══ */
+    .page { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    /* ══ TOP BAR ══ */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .topbar-logos { display: flex; align-items: center; gap: 12px; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .topbar-date { font-size: 12px; color: var(--muted); }
+    .conf-badge {
+      background: #C0392B;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 3px;
+    }
+    .logo-sep { color: #ccc; font-size: 18px; font-weight: 300; }
+
+    /* Koch K wordmark */
+    .koch-mark { display: flex; align-items: center; gap: 8px; }
+    .koch-k {
+      width: 32px; height: 32px;
+      background: var(--koch);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .koch-label { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--koch); line-height: 1; }
+    .koch-sub { font-size: 9px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+    /* ══ HERO ══ */
+    .hero h1 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 800;
+      color: var(--sf-blue);
+    }
+    .hero-body {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 14px 0 18px;
+      line-height: 1.7;
+      max-width: 620px;
+    }
+    .disclaimer-box {
+      background: #F5F7FB;
+      border: 1px solid #C8D0E0;
+      border-radius: 5px;
+      padding: 11px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 22px;
+    }
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .hm {
+      padding: 14px 0 10px;
+      border-top: 2px solid var(--border);
+    }
+    .hm .hm-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .hm .hm-num { font-size: 26px; font-weight: 800; color: var(--text); line-height: 1; }
+    .hm .hm-num.teal { color: var(--sf-blue); }
+    .hm .hm-num.green { color: var(--green); }
+    .hm .hm-sub { font-size: 11px; color: #9aa; margin-top: 3px; }
+
+    /* ══ SECTION LABEL ══ */
+    .sec-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .sec-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--koch);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .sec-name {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ══ SECTION TITLE (inside card) ══ */
+    .sec-card-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+
+    /* ══ COST COMPARISON ══ */
+    .cost-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .cc-card {
+      border-radius: 7px;
+      padding: 20px;
+      color: #fff;
+    }
+    .cc-card.snow { background: var(--snow-card); }
+    .cc-card.sf   { background: var(--sf-card); }
+
+    .cc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .cc-name {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .cc-card.snow .cc-name { color: rgba(255,255,255,0.5); }
+    .cc-card.sf   .cc-name { color: rgba(255,255,255,0.6); }
+    .cc-tag {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+    .cc-card.snow .cc-tag { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); }
+    .cc-card.sf   .cc-tag { background: rgba(30,207,196,0.2); color: var(--sf-teal); }
+
+    .cc-section-head {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin: 14px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .cc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 7px;
+      gap: 8px;
+    }
+    .cc-row-label { font-size: 12px; color: rgba(255,255,255,0.65); flex: 1; }
+    .cc-row-val {
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .cc-card.snow .cc-row-val { color: rgba(255,255,255,0.85); }
+    .cc-card.sf   .cc-row-val { color: var(--sf-teal); }
+    .cc-row-note { font-size: 10px; color: var(--sf-teal); font-style: italic; margin-left: auto; text-align: right; display: block; margin-bottom: 6px; }
+
+    .cc-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      margin-top: 10px;
+      padding-top: 10px;
+    }
+    .cc-total-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); }
+    .cc-total-val { font-size: 22px; font-weight: 800; }
+    .cc-card.snow .cc-total-val { color: #fff; }
+    .cc-card.sf   .cc-total-val { color: var(--sf-teal); }
+    .cc-total-sub { font-size: 10px; color: rgba(255,255,255,0.4); text-align: right; margin-top: 2px; display: block; }
+
+    /* ══ BAR CHART ══ */
+    .bar-compare { margin-bottom: 20px; }
+    .bar-compare-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .bar-row-label { font-size: 12px; color: var(--muted); width: 90px; text-align: right; flex-shrink: 0; font-weight: 600; }
+    .bar-track { flex: 1; height: 28px; background: #F0F2F5; border-radius: 4px; overflow: hidden; display: flex; }
+    .bar-fill {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .bar-fill.snow { background: var(--snow-card); }
+    .bar-fill.sf-yr1 { background: var(--sf-blue); }
+    .bar-fill.sf-yr2 { background: #1B6E96; }
+    .bar-end { font-size: 13px; font-weight: 700; width: 52px; text-align: right; flex-shrink: 0; }
+    .bar-savings-box {
+      background: #F5F7FB;
+      border: 1px solid #C8D0E0;
+      border-radius: 6px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+    .bsb-label { font-size: 12px; color: var(--muted); font-weight: 500; }
+    .bsb-right { display: flex; align-items: center; gap: 12px; }
+    .bsb-val { font-size: 16px; font-weight: 800; color: var(--green); }
+    .bsb-pct { background: #D4EDDA; color: var(--green); font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 4px; }
+
+    /* ══ BIG SAVINGS CALLOUT ══ */
+    .savings-callout {
+      background: var(--snow-card);
+      border-radius: 7px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 6px;
+    }
+    .sc-num {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--sf-teal);
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .sc-text { flex: 1; }
+    .sc-text strong { font-size: 14px; color: #fff; display: block; margin-bottom: 3px; }
+    .sc-text p { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+
+    /* ══ BOTTOM LINE ══ */
+    .bottom-line-bg {
+      background: #F0F2F5;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .bl-metrics {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .bl-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 16px 12px;
+      text-align: center;
+    }
+    .bl-num { font-size: 24px; font-weight: 800; color: var(--sf-blue); line-height: 1; margin-bottom: 5px; }
+    .bl-label { font-size: 11px; color: var(--muted); line-height: 1.4; }
+    .bl-italic {
+      margin-top: 16px;
+      font-style: italic;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      padding: 0 4px;
+    }
+
+    /* ══ AI SECTION ══ */
+    .ai-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 0;
+    }
+    .ai-card {
+      border-radius: 8px;
+      padding: 22px;
+      text-align: center;
+    }
+    .ai-card.blue { background: #EBF7FD; border: 1px solid #B3DDF5; }
+    .ai-card.red  { background: #FDF0EE; border: 1px solid #F5C6BE; }
+    .ai-pct { font-size: 56px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .ai-card.blue .ai-pct { color: var(--sf-blue); }
+    .ai-card.red  .ai-pct { color: var(--red); }
+    .ai-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .ai-card.blue .ai-title { color: #0C4D8B; }
+    .ai-card.red  .ai-title { color: #8B1A0C; }
+    .ai-desc { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+    /* ══ TOTAL SAVINGS ══ */
+    .total-savings-card {
+      background: var(--snow-card);
+      border-radius: 8px;
+      padding: 28px;
+    }
+    .ts-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 20px;
+    }
+    .ts-parts {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .ts-part {
+      background: var(--snow-card);
+      padding: 18px 16px;
+    }
+    .ts-part-label { font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 6px; }
+    .ts-part-num { font-size: 28px; font-weight: 800; color: var(--sf-teal); line-height: 1; margin-bottom: 4px; }
+    .ts-part-sub { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.4; }
+    .ts-note {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      font-style: italic;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 14px;
+      line-height: 1.6;
+    }
+    .ts-note strong { color: rgba(255,255,255,0.8); font-style: normal; }
+
+    /* ══ CASE STUDY ══ */
+    .cs-badge {
+      display: inline-block;
+      background: rgba(0,161,224,0.1);
+      border: 1px solid rgba(0,161,224,0.3);
+      color: var(--sf-blue);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .cs-headline {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .cs-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .cs-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .cs-col {
+      background: #F7F9FC;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 18px;
+    }
+    .cs-col-year {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 8px;
+    }
+    .cs-col-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .cs-col-body { font-size: 12px; color: var(--muted); margin-bottom: 12px; line-height: 1.6; }
+    .cs-bullet { display: flex; gap: 8px; margin-bottom: 6px; font-size: 12px; color: var(--text); align-items: flex-start; }
+    .cs-bullet::before { content: '→'; color: var(--sf-blue); font-weight: 700; flex-shrink: 0; }
+    .cs-cost-box {
+      background: var(--snow-card);
+      border-radius: 5px;
+      padding: 10px 14px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .cs-cost-label { font-size: 11px; color: rgba(255,255,255,0.5); }
+    .cs-cost-val { font-size: 16px; font-weight: 800; color: var(--sf-teal); }
+    .cs-cost-note { font-size: 10px; color: rgba(255,255,255,0.35); display: block; margin-top: 1px; }
+    .cs-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+    .cs-m { text-align: center; }
+    .cs-m-num { font-size: 20px; font-weight: 800; color: var(--sf-blue); line-height: 1; margin-bottom: 3px; }
+    .cs-m-label { font-size: 11px; color: var(--muted); line-height: 1.3; }
+
+    /* ══ BLOCKQUOTE ══ */
+    blockquote {
+      border-left: 3px solid var(--sf-blue);
+      background: #EBF7FD;
+      border-radius: 0 6px 6px 0;
+      padding: 13px 16px;
+      margin: 14px 0;
+      font-style: italic;
+      font-size: 13px;
+      color: #0C4D8B;
+      line-height: 1.65;
+    }
+    blockquote footer { font-style: normal; font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 6px; }
+
+    /* ══ TIMELINE ══ */
+    .timeline-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      margin-bottom: 22px;
+      position: relative;
+    }
+    .timeline-bar::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 12%;
+      right: 12%;
+      height: 2px;
+      background: var(--border);
+      z-index: 0;
+    }
+    .tl-phase { text-align: center; position: relative; z-index: 1; }
+    .tl-month {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    .tl-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .tl-badge.p1 { background: var(--sf-blue); color: #fff; }
+    .tl-badge.p2 { background: #1B6E96; color: #fff; }
+    .tl-badge.p3 { background: var(--snow-card); color: #fff; }
+    .tl-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+    .tl-col {
+      background: #F7F9FC;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 16px;
+    }
+    .tl-col-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .tl-col-sub { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+    .tl-bullet { display: flex; gap: 6px; margin-bottom: 5px; font-size: 12px; color: var(--text); align-items: flex-start; }
+    .tl-bullet::before { content: '→'; color: var(--sf-blue); font-weight: 700; flex-shrink: 0; font-size: 11px; }
+    .tl-cost {
+      background: var(--snow-card);
+      border-radius: 5px;
+      padding: 9px 12px;
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tl-cost span { font-size: 13px; font-weight: 700; color: var(--sf-teal); }
+
+    /* ══ HIGHLIGHT BOX ══ */
+    .highlight-box {
+      background: #EDFCFB;
+      border: 1px solid var(--sf-teal);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #0A4A44;
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+    .highlight-box strong { color: #08302D; }
+
+    /* ══ ACCORDION ══ */
+    .accordion-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      user-select: none;
+    }
+    .accordion-toggle span { font-size: 14px; font-weight: 600; color: var(--text); }
+    .accordion-arrow { font-size: 12px; color: var(--muted); transition: transform 0.2s; }
+    .accordion-body { display: none; padding-top: 18px; }
+    .accordion-body.open { display: block; }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .method-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .method-item {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      padding-left: 12px;
+      position: relative;
+      line-height: 1.55;
+    }
+    .method-item::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: #bbb;
+    }
+    .method-disclaimer {
+      font-style: italic;
+      font-size: 11px;
+      color: #aaa;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      margin-top: 18px;
+      line-height: 1.6;
+      grid-column: 1 / -1;
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: #aaa;
+      padding: 16px 0 0;
+      line-height: 1.7;
+    }
+    footer strong { color: #888; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 600px) {
+      .hero-metrics { grid-template-columns: repeat(2, 1fr); }
+      .cost-compare, .ai-split, .cs-cols, .tl-cols, .method-grid { grid-template-columns: 1fr; }
+      .bl-metrics { grid-template-columns: repeat(3, 1fr); }
+      .cs-metrics { grid-template-columns: repeat(2, 1fr); }
+      .ts-parts { grid-template-columns: 1fr; }
+      .timeline-bar { grid-template-columns: 1fr; }
+      .timeline-bar::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══ TOP BAR ═══ -->
+  <div class="topbar">
+    <div class="topbar-logos">
+      <!-- Salesforce official logo (fetched from salesforce.com CDN) -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92 64" width="132" height="92" aria-label="Salesforce">
+        <g fill="none" fill-rule="evenodd">
+          <path fill="#00A1E0" d="M38.05 6.98c2.948-3.071 7.055-4.978 11.595-4.978 6.035 0 11.302 3.366 14.106 8.363a19.494 19.494 0 0 1 7.974-1.695c10.886 0 19.71 8.902 19.71 19.885 0 10.983-8.824 19.885-19.71 19.885-1.331 0-2.629-.133-3.884-.386-2.469 4.403-7.177 7.379-12.578 7.379-2.261 0-4.4-.52-6.303-1.451C46.456 59.872 40.623 64 33.826 64c-7.078 0-13.112-4.48-15.427-10.761a15.176 15.176 0 0 1-3.137.327C6.833 53.567 0 46.663 0 38.146a15.442 15.442 0 0 1 7.631-13.357 17.662 17.662 0 0 1-1.46-7.053C6.171 7.94 14.122 0 23.93 0a17.73 17.73 0 0 1 14.12 6.98"/>
+          <path fill="#FFF" d="M13.244 33.19l.37-1.027c.059-.176.192-.118.246-.085.103.061.177.116.31.194 1.09.689 2.1.696 2.415.696.816 0 1.322-.432 1.322-1.015v-.03c0-.634-.78-.874-1.681-1.15l-.2-.064c-1.237-.352-2.56-.861-2.56-2.427v-.032c0-1.486 1.199-2.523 2.915-2.523l.188-.002c1.008 0 1.982.293 2.688.721.064.04.126.114.09.212l-.38 1.027c-.067.175-.25.059-.25.059a5.41 5.41 0 0 0-2.382-.611c-.728 0-1.196.386-1.196.91v.033c0 .611.802.872 1.732 1.175l.16.05c1.233.39 2.549.93 2.549 2.415v.031c0 1.605-1.166 2.602-3.041 2.602-.921 0-1.802-.142-2.734-.637-.176-.102-.35-.19-.522-.315-.018-.026-.097-.057-.04-.207zm27.457 0l.371-1.027c.054-.168.211-.106.245-.085.102.063.178.116.31.194 1.092.689 2.1.696 2.418.696.813 0 1.32-.432 1.32-1.015v-.03c0-.634-.779-.874-1.68-1.15l-.2-.064c-1.239-.352-2.562-.861-2.562-2.427v-.032c0-1.486 1.2-2.523 2.916-2.523l.187-.002c1.008 0 1.983.293 2.69.721.062.04.125.114.09.212-.035.091-.347.931-.38 1.027-.069.175-.25.059-.25.059a5.41 5.41 0 0 0-2.383-.611c-.728 0-1.196.386-1.196.91v.033c0 .611.801.872 1.732 1.175l.16.05c1.233.39 2.548.93 2.548 2.415v.031c0 1.605-1.165 2.602-3.04 2.602-.922 0-1.803-.142-2.734-.637-.176-.102-.35-.19-.523-.315-.018-.026-.097-.057-.039-.207zm20.31-4.829c.154.516.23 1.083.23 1.682 0 .6-.076 1.165-.23 1.681a3.77 3.77 0 0 1-.71 1.361 3.384 3.384 0 0 1-1.204.906c-.48.22-1.044.33-1.678.33-.634 0-1.2-.11-1.678-.33a3.384 3.384 0 0 1-1.204-.906 3.793 3.793 0 0 1-.711-1.36 5.909 5.909 0 0 1-.23-1.682c0-.6.077-1.166.23-1.682.154-.52.393-.978.71-1.36a3.442 3.442 0 0 1 1.205-.914c.479-.224 1.042-.337 1.678-.337.636 0 1.199.113 1.678.337.478.223.884.53 1.204.914.318.382.558.84.71 1.36zm-1.564 1.682c0-.907-.168-1.62-.502-2.12-.33-.496-.83-.736-1.526-.736-.696 0-1.192.24-1.518.736-.327.5-.494 1.213-.494 2.12 0 .906.167 1.624.496 2.128.324.502.82.745 1.516.745.696 0 1.196-.244 1.526-.745.332-.504.502-1.222.502-2.128zm14.422 2.63l.384 1.062c.05.13-.063.187-.063.187-.593.23-1.416.394-2.217.394-1.358 0-2.398-.391-3.092-1.163-.69-.77-1.042-1.817-1.042-3.116 0-.601.087-1.17.257-1.685.17-.52.425-.978.761-1.36a3.613 3.613 0 0 1 1.261-.914c.5-.223 1.088-.335 1.744-.335.443 0 .837.027 1.175.077.361.056.842.186 1.045.265.037.014.14.064.098.185-.148.417-.249.689-.386 1.069-.06.162-.182.108-.182.108-.515-.162-1.009-.236-1.654-.236-.775 0-1.357.258-1.737.763-.384.509-.599 1.176-.602 2.063-.003.973.241 1.694.673 2.14.431.445 1.033.67 1.791.67.307 0 .597-.02.858-.061.258-.041.5-.121.728-.21 0 0 .147-.055.2.097zm8.01-4.607c.341 1.194.163 2.225.157 2.282-.013.136-.153.138-.153.138l-5.299-.004c.033.805.226 1.375.616 1.762.383.379.991.622 1.814.623 1.258.003 1.795-.25 2.176-.391 0 0 .145-.052.2.092l.345.971c.07.163.014.22-.045.253-.332.183-1.137.525-2.669.529-.743.003-1.39-.103-1.923-.31a3.502 3.502 0 0 1-1.333-.883 3.497 3.497 0 0 1-.769-1.347 5.713 5.713 0 0 1-.239-1.692c0-.6.077-1.17.232-1.691.155-.525.396-.988.717-1.377a3.479 3.479 0 0 1 1.221-.93c.486-.229 1.088-.341 1.75-.341.567 0 1.085.122 1.516.308.332.142.666.399 1.008.767.216.232.545.74.678 1.241zm-5.27 1.107h3.78c-.039-.486-.134-.922-.352-1.25-.332-.496-.79-.769-1.485-.769-.696 0-1.19.273-1.517.769-.214.328-.352.746-.427 1.25zm-37.175-1.107c.34 1.194.165 2.225.159 2.282-.014.136-.154.138-.154.138l-5.3-.004c.034.805.226 1.375.617 1.762.383.379.99.622 1.813.623 1.258.003 1.797-.25 2.177-.391 0 0 .145-.052.199.092l.346.971c.07.163.014.22-.044.253-.334.183-1.14.525-2.67.529-.744.003-1.391-.103-1.923-.31a3.514 3.514 0 0 1-1.334-.883 3.506 3.506 0 0 1-.767-1.347 5.68 5.68 0 0 1-.241-1.692c0-.6.078-1.17.232-1.691a3.88 3.88 0 0 1 .718-1.377 3.488 3.488 0 0 1 1.22-.93c.488-.229 1.09-.341 1.75-.341a3.85 3.85 0 0 1 1.518.308c.332.142.666.399 1.007.767.216.232.545.74.677 1.241zm-5.271 1.107h3.782c-.04-.486-.135-.922-.352-1.25-.33-.496-.79-.769-1.485-.769-.696 0-1.191.273-1.516.769-.216.328-.353.746-.43 1.25zm-9.346-.253s.418.037.874.103v-.224c0-.707-.147-1.04-.436-1.263-.296-.226-.738-.343-1.31-.343 0 0-1.29-.016-2.31.538-.047.028-.086.044-.086.044s-.128.045-.174-.086L21 26.681c-.058-.145.047-.211.047-.211.477-.372 1.633-.597 1.633-.597a8.711 8.711 0 0 1 1.421-.131c1.058 0 1.877.246 2.434.733.558.489.842 1.277.842 2.339l.003 4.848s.011.14-.122.172c0 0-.195.054-.37.095-.177.041-.815.171-1.336.259a9.744 9.744 0 0 1-1.61.134c-.515 0-.987-.048-1.403-.143a2.92 2.92 0 0 1-1.079-.468 2.192 2.192 0 0 1-.69-.829c-.163-.333-.245-.74-.245-1.21 0-.461.097-.872.284-1.222.188-.348.446-.643.77-.874a3.425 3.425 0 0 1 1.105-.513c.413-.11.852-.167 1.306-.167.333 0 .611.007.827.024zm-2.109 3.724c-.003-.001.475.375 1.554.309.758-.046 1.43-.19 1.43-.19v-2.41s-.678-.111-1.439-.122c-1.079-.013-1.539.384-1.536.383-.318.226-.473.561-.473 1.025 0 .297.053.529.16.691.067.107.096.147.304.314zm44.855-6.455c-.05.145-.307.871-.4 1.112-.034.092-.09.155-.193.144 0 0-.304-.07-.582-.07-.191 0-.464.024-.71.1a1.586 1.586 0 0 0-.654.393c-.194.187-.351.45-.465.78-.116.332-.176.86-.176 1.39v3.948a.16.16 0 0 1-.16.161h-1.391a.162.162 0 0 1-.164-.16v-7.905c0-.089.065-.16.154-.16h1.357c.09 0 .154.071.154.16v.646c.203-.272.567-.512.896-.66.33-.15.699-.26 1.366-.22.347.021.798.116.889.151a.144.144 0 0 1 .079.19zm-13.07-3.663c.037.015.138.064.098.184l-.407 1.113c-.034.084-.056.134-.229.082a2.388 2.388 0 0 0-.707-.11c-.21 0-.4.027-.568.083a1.084 1.084 0 0 0-.444.274 1.545 1.545 0 0 0-.372.566c-.195.56-.27 1.157-.28 1.195h1.694c.143 0 .188.066.174.171l-.198 1.102c-.032.16-.177.154-.177.154h-1.746l-1.193 6.756a10.426 10.426 0 0 1-.466 1.78c-.187.489-.38.846-.69 1.187a2.43 2.43 0 0 1-.979.682c-.367.135-.813.204-1.3.204-.232 0-.482-.005-.777-.075a4.198 4.198 0 0 1-.485-.142c-.065-.023-.118-.106-.08-.212.036-.105.35-.964.392-1.077.054-.136.192-.084.192-.084.094.04.16.066.285.091.127.025.297.047.426.047.231 0 .441-.028.624-.09.22-.071.35-.2.484-.372.14-.181.254-.426.371-.755.117-.333.224-.773.316-1.306l1.188-6.633h-1.17c-.14 0-.188-.066-.172-.172l.196-1.102c.031-.16.18-.154.18-.154h1.201l.065-.358c.18-1.064.537-1.873 1.065-2.404.531-.535 1.286-.805 2.244-.805.274 0 .516.018.721.055.201.038.354.073.524.125zM30.817 33.986c0 .09-.062.161-.152.161H29.26c-.09 0-.151-.072-.151-.16V22.674c0-.087.062-.159.15-.159h1.406c.09 0 .152.072.152.16v11.311z"/>
+        </g>
+      </svg>
+      <span class="logo-sep">×</span>
+      <!-- Koch mark -->
+      <div class="koch-mark">
+        <div class="koch-k">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M4 3H7.5V10.5L14.5 3H19L11.5 11L19.5 21H15L9 13.5L7.5 15V21H4V3Z" fill="white"/>
+          </svg>
+        </div>
+        <div>
+          <div class="koch-label">Koch</div>
+          <div class="koch-sub">Technologies</div>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-date">June 2026</span>
+      <span class="conf-badge">Confidential</span>
+    </div>
+  </div>
+
+  <!-- ═══ HERO ═══ -->
+  <div class="card">
+    <h1 class="hero h1">Koch Technologies Is Likely Spending ~$8M/yr on ServiceNow Licensing.<br/><em>Salesforce Would Cost ~$3.5M/yr.</em></h1>
+    <p class="hero-body">Koch's estimated ServiceNow spend includes ~$8M in licensing plus ~$2M in ongoing maintenance and upgrade costs. Salesforce licensing is ~$3.5M/yr ($2.5M for IT Service + AI Agents for Employees, unmetered; +$1M for CMDB in Year 2), plus an estimated ~$150K/yr for managed support. These are directional estimates, pending confirmation of Koch's actual bill of materials.</p>
+    <div class="disclaimer-box">These are estimates, not final quotes. If any number looks off, we would love to revisit it together.</div>
+    <div class="hero-metrics">
+      <div class="hm">
+        <div class="hm-label">ServiceNow</div>
+        <div class="hm-num">~$10M</div>
+        <div class="hm-sub">Total cost per year</div>
+      </div>
+      <div class="hm">
+        <div class="hm-label">Salesforce</div>
+        <div class="hm-num teal">~$3.5M</div>
+        <div class="hm-sub">Licensing per year</div>
+      </div>
+      <div class="hm">
+        <div class="hm-label">Licensing Savings</div>
+        <div class="hm-num green">~$4.5M</div>
+        <div class="hm-sub">Per year, apples to apples</div>
+      </div>
+      <div class="hm">
+        <div class="hm-label">Total Hard Cost Savings</div>
+        <div class="hm-num green">~$5.4M</div>
+        <div class="hm-sub">Per year incl. support savings</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 1: PLATFORM COST SAVINGS ═══ -->
+  <div class="card">
+    <div class="sec-label"><div class="sec-num">1</div><div class="sec-name">Platform Cost Savings</div></div>
+    <div class="sec-card-title">What Koch Technologies Pays Now vs. What Salesforce Would Cost</div>
+
+    <div class="cost-compare">
+      <!-- ServiceNow -->
+      <div class="cc-card snow">
+        <div class="cc-header">
+          <div class="cc-name">ServiceNow</div>
+          <div class="cc-tag">Assumed</div>
+        </div>
+        <div class="cc-section-head">Licensing</div>
+        <div class="cc-row">
+          <div class="cc-row-label">ITSM, ITOM, CMDB</div>
+          <div class="cc-row-val">$8M<span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.4)">/yr</span></div>
+        </div>
+        <div class="cc-section-head">Maintenance &amp; Upgrades</div>
+        <div class="cc-row">
+          <div class="cc-row-label">SI-led upgrades (2–3×/yr) + admin</div>
+          <div class="cc-row-val">$2M<span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.4)">/yr</span></div>
+        </div>
+        <div class="cc-total">
+          <div class="cc-total-label">Total</div>
+          <div>
+            <div class="cc-total-val">$10M<span style="font-size:13px;font-weight:400;color:rgba(255,255,255,0.4)">/yr</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- Salesforce -->
+      <div class="cc-card sf">
+        <div class="cc-header">
+          <div class="cc-name">Salesforce</div>
+          <div class="cc-tag">Estimated</div>
+        </div>
+        <div class="cc-section-head">Licensing</div>
+        <div class="cc-row">
+          <div class="cc-row-label">IT Service + AI Agents for Employees (Year 1)<br/><em style="font-size:10px;color:var(--sf-teal)">Agentforce for requestors is unmetered</em></div>
+          <div class="cc-row-val">$2.5M<span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.4)">/yr</span></div>
+        </div>
+        <div class="cc-row">
+          <div class="cc-row-label">Enterprise CMDB (Year 2)</div>
+          <div class="cc-row-val">$1M<span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.4)">/yr</span></div>
+        </div>
+        <span class="cc-row-note">= $3.5M total licensing</span>
+        <div class="cc-section-head">Ongoing Support</div>
+        <div class="cc-row">
+          <div class="cc-row-label">Partner MSP (no upgrade projects)</div>
+          <div class="cc-row-val">$150K<span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.4)">/yr</span></div>
+        </div>
+        <div class="cc-section-head">Implementation</div>
+        <div class="cc-row">
+          <div class="cc-row-label">Migration and setup (one-time)</div>
+          <div class="cc-row-val">$1.2M<span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.4)"> one-time</span></div>
+        </div>
+        <div class="cc-total">
+          <div>
+            <div class="cc-total-label">Annual Total</div>
+            <span class="cc-total-sub">+ $1.2M one-time implementation</span>
+          </div>
+          <div>
+            <div class="cc-total-val">$3.65M<span style="font-size:13px;font-weight:400;color:rgba(255,255,255,0.4)">/yr</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bar chart -->
+    <div class="bar-compare">
+      <div class="bar-compare-title">Licensing vs. Licensing (Apples to Apples)</div>
+      <div class="bar-row">
+        <div class="bar-row-label">ServiceNow</div>
+        <div class="bar-track">
+          <div class="bar-fill snow" style="width:100%">$8M licensing</div>
+        </div>
+        <div class="bar-end">$8M</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-row-label">Salesforce</div>
+        <div class="bar-track">
+          <div class="bar-fill sf-yr1" style="width:31%">$2.5M Yr 1</div>
+          <div class="bar-fill sf-yr2" style="width:12%; margin-left:2px">$1M Yr 2</div>
+        </div>
+        <div class="bar-end">$3.5M</div>
+      </div>
+      <div class="bar-savings-box">
+        <div class="bsb-label">Licensing savings</div>
+        <div class="bsb-right">
+          <div class="bsb-val">$4.5M / yr</div>
+          <div class="bsb-pct">56% reduction</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Big callout -->
+    <div class="savings-callout">
+      <div class="sc-num">~$25M</div>
+      <div class="sc-text">
+        <strong>Switching to Salesforce from ServiceNow could save ~$25M over 5 years, net of setup</strong>
+        <p>$5.35M saved per year × 5 years = $26.75M gross, minus $1.2M one-time setup = ~$25.5M net. Before any AI or staffing savings.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 2: BOTTOM LINE ═══ -->
+  <div class="bottom-line-bg">
+    <div class="sec-label"><div class="sec-num">2</div><div class="sec-name">The Bottom Line</div></div>
+    <div class="bl-metrics">
+      <div class="bl-card">
+        <div class="bl-num">~$25M</div>
+        <div class="bl-label">5-year hard cost savings (net, estimated)</div>
+      </div>
+      <div class="bl-card">
+        <div class="bl-num">~$5.4M</div>
+        <div class="bl-label">Savings every year</div>
+      </div>
+      <div class="bl-card">
+        <div class="bl-num">~2–3 mo</div>
+        <div class="bl-label">Paid back</div>
+      </div>
+      <div class="bl-card">
+        <div class="bl-num">~56%</div>
+        <div class="bl-label">Platform cost reduction</div>
+      </div>
+      <div class="bl-card">
+        <div class="bl-num">~20×</div>
+        <div class="bl-label">Return on investment</div>
+      </div>
+    </div>
+    <p class="bl-italic">The ~$25M in estimated platform savings happens just by switching software. No AI adoption or behavior change needed. That is the floor. Everything below is upside.</p>
+  </div>
+
+  <!-- ═══ SECTION 3: AI REDUCES IT SUPPORT COSTS ═══ -->
+  <div class="card">
+    <div class="sec-label"><div class="sec-num">3</div><div class="sec-name">AI Reduces IT Support Costs</div></div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6;">On top of the platform savings, Salesforce uses AI to automatically handle a large share of IT help desk tickets. The AI handles the simple ones, so your team spends time only on the hard ones.</p>
+    <div class="ai-split">
+      <div class="ai-card blue">
+        <div class="ai-pct">80%</div>
+        <div class="ai-title">Resolved by AI automatically</div>
+        <div class="ai-desc">Password resets, access requests, software installs, and common incidents handled without a human — 24 hours a day, 7 days a week</div>
+      </div>
+      <div class="ai-card red">
+        <div class="ai-pct">20%</div>
+        <div class="ai-title">Escalated to your team</div>
+        <div class="ai-desc">Complex issues, outages, and high-priority incidents that actually need human judgment — with full AI context already gathered</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 4: TOTAL SAVINGS ═══ -->
+  <div class="card">
+    <div class="sec-label"><div class="sec-num">4</div><div class="sec-name">Total Savings: Put It All Together</div></div>
+    <div class="total-savings-card">
+      <div class="ts-label">5-Year Combined Estimated Value</div>
+      <div class="ts-parts">
+        <div class="ts-part">
+          <div class="ts-part-label">Part 1 · Platform Savings</div>
+          <div class="ts-part-num">~$25M</div>
+          <div class="ts-part-sub">Switching platforms, net of $1.2M setup. Guaranteed.</div>
+        </div>
+        <div class="ts-part" style="border-left:1px solid rgba(255,255,255,0.1)">
+          <div class="ts-part-label">Part 2 · AI Saves Time</div>
+          <div class="ts-part-num">~$26M</div>
+          <div class="ts-part-sub">AI handling tickets automatically. Based on industry benchmarks.</div>
+        </div>
+        <div class="ts-part" style="border-left:1px solid rgba(255,255,255,0.1)">
+          <div class="ts-part-label">Total Savings Opportunity</div>
+          <div class="ts-part-num">~$51M</div>
+          <div class="ts-part-sub">Combined over 5 years. Part 1 alone already justifies the switch.</div>
+        </div>
+      </div>
+      <div class="ts-note"><strong>Part 1 savings happen the moment you switch software. Part 2 savings come from AI handling tickets automatically. Both are real, but Part 1 is locked in and Part 2 depends on actual usage.</strong></div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 5: CASE STUDY ═══ -->
+  <div class="card">
+    <div class="sec-label"><div class="sec-num">5</div><div class="sec-name">This Has Already Been Done</div></div>
+    <div class="cs-badge">Customer Reference</div>
+    <div class="cs-headline">A comparable company just did this.</div>
+    <div class="cs-sub">Fortune 500 global manufacturer — 25,000+ employees · ServiceNow exit over 24 months.</div>
+
+    <blockquote>
+      "We chose Salesforce vs. ServiceNow and the other contenders because of the experience we were going to be able to provide with Service Cloud. And the data that we were going to be able to take action on."
+      <footer>— VP Global Technical Support, Fortune 500 Technology Company</footer>
+    </blockquote>
+
+    <div class="cs-cols">
+      <div class="cs-col">
+        <div class="cs-col-year">Year 1</div>
+        <div class="cs-col-title">Service Desk Replaced</div>
+        <div class="cs-col-body">Salesforce replaced the service desk. Existing ServiceNow CMDB stayed in place.</div>
+        <div class="cs-bullet">IT Service Desk live on Agentforce</div>
+        <div class="cs-bullet">AI Agents for employees, unmetered</div>
+        <div class="cs-bullet">Salesforce becomes the engagement layer — Teams, email, SMS, voice, or portal</div>
+        <div class="cs-bullet">Integrated into existing CMDB</div>
+        <div class="cs-cost-box">
+          <span class="cs-cost-label">Annual licensing cost</span>
+          <span class="cs-cost-val">$2.5M<span style="font-size:11px;font-weight:400;color:rgba(255,255,255,0.4)">/yr</span></span>
+        </div>
+      </div>
+      <div class="cs-col">
+        <div class="cs-col-year">Year 2</div>
+        <div class="cs-col-title">ServiceNow Gone</div>
+        <div class="cs-col-body">CMDB migrates to Salesforce. ServiceNow contract not renewed.</div>
+        <div class="cs-bullet">CMDB moved to Salesforce</div>
+        <div class="cs-bullet">ServiceNow contract not renewed</div>
+        <div class="cs-bullet">One platform for IT, assets, and AI</div>
+        <div class="cs-bullet">Full savings realized</div>
+        <div class="cs-cost-box">
+          <div>
+            <span class="cs-cost-label">CMDB license added</span>
+            <span class="cs-cost-note">ServiceNow fully exited</span>
+          </div>
+          <span class="cs-cost-val">+$1M<span style="font-size:11px;font-weight:400;color:rgba(255,255,255,0.4)">/yr</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-metrics">
+      <div class="cs-m"><div class="cs-m-num">$5M+</div><div class="cs-m-label">Saved per year</div></div>
+      <div class="cs-m"><div class="cs-m-num">25%+</div><div class="cs-m-label">TCO reduction</div></div>
+      <div class="cs-m"><div class="cs-m-num">60–80%</div><div class="cs-m-label">Tickets resolved by AI</div></div>
+      <div class="cs-m"><div class="cs-m-num">90 days</div><div class="cs-m-label">To go-live</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 6: 2-YEAR PATH ═══ -->
+  <div class="card">
+    <div class="sec-label"><div class="sec-num">6</div><div class="sec-name">The 2-Year Path Out of ServiceNow</div></div>
+
+    <div class="timeline-bar">
+      <div class="tl-phase">
+        <div class="tl-month">Month 1–3</div>
+        <div class="tl-badge p1">Go-Live</div>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-month">Month 6–15</div>
+        <div class="tl-badge p2">Full Operation</div>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-month">Month 15–24</div>
+        <div class="tl-badge p3">ServiceNow Out</div>
+      </div>
+    </div>
+
+    <div class="tl-cols">
+      <div class="tl-col">
+        <div class="tl-col-title">Year 1: Service Desk Live</div>
+        <div class="tl-col-sub">Salesforce replaces the service desk. Existing ServiceNow CMDB stays in place.</div>
+        <div class="tl-bullet">IT Service Desk live on Agentforce</div>
+        <div class="tl-bullet">AI Agents for employees, unmetered</div>
+        <div class="tl-bullet">Salesforce becomes the engagement layer for all employee requests — Teams, email, SMS, voice, or portal. Our agents meet employees where they work.</div>
+        <div class="tl-bullet">Integrated into existing CMDB</div>
+        <div class="tl-cost">Annual licensing cost <span>$2.5M/yr</span></div>
+      </div>
+      <div class="tl-col">
+        <div class="tl-col-title">Still Year 1: Running Smoothly</div>
+        <div class="tl-col-sub">Platform self-improves. No upgrade projects. No freeze windows.</div>
+        <div class="tl-bullet">3 upgrades per year, already included</div>
+        <div class="tl-bullet">No SI needed for upgrades</div>
+        <div class="tl-bullet">Partner MSP at ~$150K/yr</div>
+        <div class="tl-bullet">ServiceNow coexists during transition</div>
+        <div class="tl-cost">vs. $2M/yr ServiceNow SI <span>$150K/yr</span></div>
+      </div>
+      <div class="tl-col">
+        <div class="tl-col-title">Year 2: CMDB Takeover</div>
+        <div class="tl-col-sub">CMDB migrates to Salesforce. ServiceNow contract ends.</div>
+        <div class="tl-bullet">CMDB moved to Salesforce</div>
+        <div class="tl-bullet">ServiceNow contract not renewed</div>
+        <div class="tl-bullet">One platform for IT, assets, and AI</div>
+        <div class="tl-bullet">Full savings realized</div>
+        <div style="background:#0C3D5A;border-radius:5px;padding:9px 12px;margin-top:10px;">
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:4px;font-weight:600;letter-spacing:0.5px;">ENDPOINTS INCLUDED AT NO CHARGE</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5;">Mobile phones, tablets, desktops, and laptops are tracked in CMDB with no additional cost — unlike ServiceNow, where device growth can increase your bill.</div>
+        </div>
+        <div class="tl-cost">CMDB license added <span>+$1M/yr</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 7: NO EXTRA CHARGE FOR DEVICES ═══ -->
+  <div class="card">
+    <div class="sec-label"><div class="sec-num">7</div><div class="sec-name">No Extra Charge for Devices</div></div>
+    <div style="background:var(--snow-card);border-radius:7px;padding:22px 24px;">
+      <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:8px;">Laptops, Phones, and Tablets — <em style="color:var(--sf-teal)">Included at No Extra Cost</em></div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:18px;line-height:1.6;">Salesforce tracks all your endpoint devices in CMDB at no extra charge. With ServiceNow, every new device can add to your licensing bill. At Koch's scale, this creates a meaningful long-term cost advantage as devices and headcount grow.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:14px 16px;">
+          <div style="font-size:20px;font-weight:800;color:var(--sf-teal);margin-bottom:3px;">~30K+</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.4;">Estimated endpoint devices at Koch (2 to 2.5 per employee)</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:14px 16px;">
+          <div style="font-size:20px;font-weight:800;color:var(--sf-teal);margin-bottom:3px;">$0</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.4;">Extra Salesforce charge for endpoint devices</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:14px 16px;">
+          <div style="font-size:20px;font-weight:800;color:var(--sf-teal);margin-bottom:3px;">CMDB</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.4;">Included at no charge for endpoint devices</div>
+        </div>
+      </div>
+      <div class="highlight-box">
+        <strong>Laptops, phones, tablets, and desktops are all included at no extra cost.</strong> With many ServiceNow setups, adding more devices means paying more. Salesforce does not work that way. As Koch's device count grows, Salesforce costs stay flat.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 8: HOW WE CALCULATED ═══ -->
+  <div class="card">
+    <div class="sec-label"><div class="sec-num">8</div><div class="sec-name">How We Calculated These Numbers</div></div>
+    <div class="accordion-toggle" onclick="toggleAccordion(this)">
+      <span>See How We Got These Numbers</span>
+      <span class="accordion-arrow" id="arrow">▼ Expand</span>
+    </div>
+    <div class="accordion-body" id="method-body">
+      <div class="method-grid">
+        <div>
+          <div class="method-section-title">ServiceNow Cost Assumptions</div>
+          <div class="method-item">Licensing: ~$8M per year (assumed, not a confirmed contract value)</div>
+          <div class="method-item">Maintenance, upgrades, managed services, and administration: ~$2M per year</div>
+          <div class="method-item">Total ServiceNow TCO: ~$10M per year</div>
+        </div>
+        <div>
+          <div class="method-section-title">Salesforce Cost Assumptions</div>
+          <div class="method-item">Salesforce Year 1 licensing (IT Service Desk + AI Agents for Employees, unmetered): ~$2.5M per year</div>
+          <div class="method-item">Salesforce Year 2 CMDB: ~$1M per year</div>
+          <div class="method-item">Ongoing MSP support: ~$150K per year</div>
+          <div class="method-item">Total Salesforce annual cost: ~$3.65M per year ($3.5M licensing + $150K MSP)</div>
+          <div class="method-item">Implementation: ~$1.2M one-time</div>
+          <div class="method-item">Three upgrades per year included, no separate project costs</div>
+          <div class="method-item">Endpoint devices included in CMDB at no additional charge</div>
+        </div>
+        <div>
+          <div class="method-section-title">Ticket Volume Assumptions</div>
+          <div class="method-item">Assumed employee base: ~15,000</div>
+          <div class="method-item">~10 tickets per employee per year = ~150,000 per year</div>
+          <div class="method-item">P4 low (46%): ~69,000 tickets at $20 each</div>
+          <div class="method-item">P3 medium (22%): ~33,000 tickets at $50 each</div>
+          <div class="method-item">P2 high (7%): ~10,500 tickets at $80 each</div>
+          <div class="method-item">P1 critical (6%): ~9,000 tickets at $150 each</div>
+          <div class="method-item">Planned work (20%): ~30,000 tickets at $40 each</div>
+        </div>
+        <div>
+          <div class="method-section-title">AI Savings Assumptions</div>
+          <div class="method-item">P4 tickets fully handled by AI: ~69,000 per year</div>
+          <div class="method-item">P3 tickets 50% handled by AI: ~16,500 per year</div>
+          <div class="method-item">Total tickets handled by AI: ~85,500 per year</div>
+          <div class="method-item">AI interaction cost: ~$5 per ticket = ~$427K per year</div>
+          <div class="method-item">Remaining human support cost estimated at roughly half of current baseline</div>
+          <div class="method-item">Current AI handling rate assumed near zero</div>
+        </div>
+        <div class="method-disclaimer">These are directional assumptions pending Koch BOM confirmation. All figures are estimates based on industry benchmarks. Salesforce will provide a formal platform quote. Hard cost figures need confirmation of actual ITSM spend.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <strong>Salesforce · Agentforce IT Service</strong> · Prepared for Koch Technologies · June 2026<br/>
+    Estimates based on industry benchmarks. Formal quote to follow. Confidential.
+  </footer>
+
+</div>
+
+<script>
+  function toggleAccordion(el) {
+    const body = document.getElementById('method-body');
+    const arrow = document.getElementById('arrow');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    arrow.textContent = isOpen ? '▼ Expand' : '▲ Collapse';
+  }
+</script>
+</body>
+</html>
